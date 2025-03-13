@@ -31,17 +31,23 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
 
-      - name: Build and push api Docker image
+      - name: Build and push rest-api Docker image
         uses: docker/build-push-action@v6
         with:
           context: ./api
           file: ./api/docker/prod.Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}/api
+          labels: ${{ steps.meta.outputs.labels }}/api
 
-
-
+      - name: Build and push server Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./api
+          file: ./api/docker/prod.Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}/server
+          labels: ${{ steps.meta.outputs.labels }}/server
 # push all images
 # send to VPS compose file
 # stop already running compose files
